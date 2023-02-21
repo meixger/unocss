@@ -56,6 +56,33 @@ describe('transformer-directives', () => {
       `)
   })
 
+  test('daisyui', async () => {
+    const result = await transform(
+      `.test1 {
+        @apply bg-slate-200; 
+        @apply text-center;
+      }
+      .test2 {
+        @apply text-center;
+        @apply bg-slate-200; 
+      }`,
+    )
+    expect(result)
+      .toMatchInlineSnapshot(`
+        ".test1 {
+          --un-bg-opacity: 1;
+          background-color: rgba(226, 232, 240, var(--un-bg-opacity));
+          text-align: center;
+        }
+        .test2 {
+          text-align: center;
+          --un-bg-opacity: 1;
+          background-color: rgba(226, 232, 240, var(--un-bg-opacity));
+        }
+        "
+      `)
+  })
+
   test('breakpoint', async () => {
     const result = await transform(
       '.grid { @apply grid grid-cols-2 xl:grid-cols-10 sm:grid-cols-7 md:grid-cols-3 lg:grid-cols-4 }',
